@@ -1,1 +1,74 @@
-<p>graph works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Similarity Search</title>
+    <script src="https://www.desmos.com/api/v1.6/calculator.js"></script>
+    <style>
+        #calculator {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload an Image for Similarity Search</h2>
+    <input type="file" id="fileInput" accept="image/*">
+    <button onclick="uploadImage()">Upload</button>
+    <p id="status"></p>
+
+    <h3>Similarity Graph</h3>
+    <div id="calculator"></div>
+
+    <script>
+        // Initialize Desmos Graphing Calculator
+        var elt = document.getElementById('calculator');
+        var calculator = Desmos.GraphingCalculator(elt);
+
+        // Function to upload an image
+        async function uploadImage() {
+            let fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert("Please select an image!");
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append("image", fileInput.files[0]);
+
+            document.getElementById("status").innerText = "Uploading...";
+
+            try {
+                let response = await fetch("http://localhost:5000/upload", {
+                    method: "POST",
+                    body: formData
+                });
+                let data = await response.json();
+
+                if (data.success) {
+                    document.getElementById("status").innerText = "Upload successful!";
+                    updateGraph(data.similarities);
+                } else {
+                    document.getElementById("status").innerText = "Error: " + data.error;
+                }
+            } catch (error) {
+                console.error("Upload failed:", error);
+                document.getElementById("status").innerText = "Upload failed!";
+            }
+        }
+
+        // Function to update Desmos graph with similarity scores
+        function updateGraph(similarities) {
+            let expressions = similarities.map((value, index) => ({
+                id: `similarity_${index}`,
+                latex: `(${index}, ${value})`,
+                pointStyle: "POINT",
+                color: "#ff0000"
+            }));
+
+            calculator.setExpressions(expressions);
+        }
+    </script>
+</body>
+</html>
