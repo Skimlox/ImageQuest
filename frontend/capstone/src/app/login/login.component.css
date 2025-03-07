@@ -22,9 +22,6 @@ input {
 p {
   line-height: 1.5em;
 }
-
-after { clear: both; }
-
 #login {
   margin: 50px auto;
   width: 320px;
@@ -86,4 +83,20 @@ after { clear: both; }
 }
 #login form input[type="submit"]:hover {
   background: #16aa56;
+}
+
+.sign {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.sign a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sign a:hover {
+  text-decoration: underline;
 }

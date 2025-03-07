@@ -10,9 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular-plotly.js": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "plotly.js": "^3.0.1",
+    "plotly.js-dist-min": "^3.0.1",
     "redux": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^5.1.7",
+    "@types/jest": "^29.5.14",
+    "@types/plotly.js": "^2.35.2",
+    "@types/plotly.js-dist-min": "^2.3.4"
   }
 }
