@@ -15,8 +15,7 @@ export class GraphComponent {
   public graph = {
     data: [{x: [1999, 2000, 2001, 2002],
     y: [10, 15, 13, 17],
-    z: [4],
-    type: 'scatter3d'
+    type: 'scatter'
     }],
     layout: { 
       width: 1250,
