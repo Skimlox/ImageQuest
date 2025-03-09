@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li><a href=""><i class="fa-solid fa-user"></i></a></li>
+        <li><a href=""><i class="fa-solid fa-network-wired"></i></a>
+          <ul>
+          <li><a href="">Neural Network 1</a></li>
+          <li><a href="">Neural Network 2</a></li>
+          <li><a href="">Neural Network 2</a></li>
+          </ul>
+        </li>
+        <li><a href="" (click)="FileInput($event)"><i class="fa-solid fa-folder"></i>
+        </a>
+          <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)">
+          <ul>
+          <li><a href="">Dataset 1</a></li>
+          <li><a href="">Dataset 2</a></li>
+          <li><a href="">Dataset 3</a></li>
+          </ul>
+        </li>
+        <li><a href=""><i class="fa-solid fa-minimize"></i></a>
+          <ul>
+          <li><a href="">Principal Component Analysis</a></li>
+          <li><a href="">t-SNE</a></li>
+          </ul>
+        </li>
+        <li><a href=""><i class="fa-solid fa-magnifying-glass"></i></a></li>
+      </ul>
+</body>
+</html>

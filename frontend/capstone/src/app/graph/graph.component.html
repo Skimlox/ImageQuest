@@ -1,1 +1,14 @@
-<p>graph works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <app-toolbar></app-toolbar>
+    <div class="container">
+        <plotly-plot [data] = "graph.data" [layout]="graph.layout"></plotly-plot>
+    </div>
+</body>
+</html>
