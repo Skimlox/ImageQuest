@@ -25,7 +25,9 @@ return_nodes = {
     'layer4': 'layer4',
 }
 features =  create_feature_extractor(model, return_nodes=return_nodes)
-dataset_path  = 'C:/Users/16784/Desktop/server/ImageQuest/backend/test_dataset'
+
+#Use path on local machine
+dataset_path  = 'C:/Users/16784/Desktop/server/ImageQuest/backend/test_dataset'  #Can use any image dataset from kaggle, feature vectors currently extracted used this dataset https://www.kaggle.com/datasets/vishalsubbiah/pokemon-images-and-types
 dataset = ImageFolder(root=dataset_path, transform=data_transforms)
 dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
