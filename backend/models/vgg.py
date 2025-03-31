@@ -27,7 +27,7 @@ return_nodes = {
 }
 features = create_feature_extractor(model, return_nodes=return_nodes)
 
-dataset_path = 'C:/Users/16784/Desktop/server/ImageQuest/backend/test_dataset'
+dataset_path = 'C:/Users/16784/Desktop/server/ImageQuest/backend/test_dataset'  #Can use any image dataset from kaggle, feature vectors currently extracted used this dataset https://www.kaggle.com/datasets/vishalsubbiah/pokemon-images-and-types
 dataset = ImageFolder(root=dataset_path, transform=data_transforms)
 dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
@@ -35,8 +35,9 @@ extract = []
 for i, (image, label) in enumerate(dataloader):
     with torch.no_grad():
         output = features(image)
-    extraction = output['features.28'].cpu().numpy().flatten()
-    extract.append(extraction)
+    extraction = output['features.28'].cpu().numpy()
+    reduce = extraction.reshape(1, -1)
+    extract.append(reduce)
     print(f"Image {i+1} features shape: {output['features.28'].shape}")
 
 with open('C:/Users/16784/Desktop/server/ImageQuest/backend/feature_vectors/features_vgg.pkl', 'wb') as b:

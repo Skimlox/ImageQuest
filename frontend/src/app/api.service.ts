@@ -5,9 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://127.0.0.1:5000/index'
-  constructor(private http: HttpClient) { }
-  getHelloMessage(): Observable<{ message: string }> {
-    return this.http.get<{ message: string }>(this.apiUrl);
-}
+  private url = 'http://127.0.0.1:5000'
+  
+
 }
