@@ -10,14 +10,13 @@
         <li><a href=""><i class="fa-solid fa-user"></i></a></li>
         <li><a href=""><i class="fa-solid fa-network-wired"></i></a>
           <ul>
-          <li><a href="">Neural Network 1</a></li>
-          <li><a href="">Neural Network 2</a></li>
-          <li><a href="">Neural Network 2</a></li>
+          <li><a href="" (click)="ResNet50(); $event.preventDefault()">ResNet50</a></li>
+          <li><a href="" (click)="VGG16(); $event.preventDefault()">VGG16</a></li>
+          <li><a href=""(click)="InceptionV3(); $event.preventDefault()">InceptionV3</a></li>
           </ul>
         </li>
-        <li><a href="" (click)="FileInput($event)"><i class="fa-solid fa-folder"></i>
-        </a>
-          <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)">
+        <li><a href=""><i class="fa-solid fa-folder"></i></a>
+          <input type="file" #fileInput style="display: none;">
           <ul>
           <li><a href="">Dataset 1</a></li>
           <li><a href="">Dataset 2</a></li>
