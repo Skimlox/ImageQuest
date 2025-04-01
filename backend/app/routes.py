@@ -12,6 +12,7 @@ from torchvision.models.feature_extraction import get_graph_node_names
 from torchvision.models.feature_extraction import create_feature_extractor
 from torch.utils.data import DataLoader
 import pickle
+percent = 0 
 
 @app.route('/resnet', methods=['POST'])
 def resnet_NN():
@@ -43,11 +44,15 @@ def resnet_NN():
         reduce = extraction.reshape(1, -1)
         extract.append(reduce)
         print(f"Image {i+1} features shape: {output['layer4'].shape}")
-
+        percent = (i + 1) / total_images * 100
     with open('C:/Users/16784/Desktop/server/ImageQuest/backend/feature_vectors/features_resnet.pkl', 'wb') as a:
         pickle.dump(extract, a) 
 
     return jsonify({"message": "ResNet feature extraction"})
+
+@app.route('/progress', methods=['GET'])
+def get_progress():
+    return jsonify({"progress": percent})
 
 @app.route('/vgg', methods=['POST'])
 def vgg_NN():
@@ -81,10 +86,11 @@ def vgg_NN():
         extract.append(reduce)
         print(f"Image {i+1} features shape: {output['features.28'].shape}")
 
-        with open('C:/Users/16784/Desktop/server/ImageQuest/backend/feature_vectors/features_vgg.pkl', 'wb') as b:
-            pickle.dump(extract, b)
+    with open('C:/Users/16784/Desktop/server/ImageQuest/backend/feature_vectors/features_vgg.pkl', 'wb') as b:
+        pickle.dump(extract, b)
 
     return jsonify({"message": "VGG feature extraction"})
+
 
 @app.route('/inception', methods=['POST'])
 def inception_NN():
