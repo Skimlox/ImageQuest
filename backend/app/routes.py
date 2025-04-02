@@ -12,7 +12,7 @@ from torchvision.models.feature_extraction import get_graph_node_names
 from torchvision.models.feature_extraction import create_feature_extractor
 from torch.utils.data import DataLoader
 import pickle
-percent = 0 
+
 
 @app.route('/resnet', methods=['POST'])
 def resnet_NN():
@@ -44,7 +44,7 @@ def resnet_NN():
         reduce = extraction.reshape(1, -1)
         extract.append(reduce)
         print(f"Image {i+1} features shape: {output['layer4'].shape}")
-        percent = (i + 1) / total_images * 100
+        
     with open('C:/Users/16784/Desktop/server/ImageQuest/backend/feature_vectors/features_resnet.pkl', 'wb') as a:
         pickle.dump(extract, a) 
 
@@ -130,6 +130,40 @@ def inception_NN():
         pickle.dump(extract, c)   
 
     return jsonify({"message": "Inception feature extraction"})
+
+@app.route('/resnetpca', methods=['POST'])
+def resnetpca():
+    coordinates = resnet_PCA()
+    return jsonify(coordinates.tolist())
+
+@app.route('/vggpca', methods=['POST'])
+def vggpca():
+    coordinates = vgg_PCA()
+    return jsonify(coordinates.tolist())
+
+@app.route('/inceptionpca', methods=['POST'])
+def inceptionpca():
+    coordinates = inception_PCA()
+    return jsonify(coordinates.tolist())
+
+
+@app.route('/resnettsne', methods=['POST'])
+def resnettsne():
+    coordinates = resnet_tsne()
+    return jsonify(coordinates.tolist())
+
+@app.route('/vggtsne', methods=['POST'])
+def vggtsne():
+    coordinates = vgg_tsne()
+    return jsonify(coordinates.tolist())
+
+@app.route('/inceptiontsne', methods=['POST'])
+def inceptiontsne():
+    coordinates = inception_tsne()
+    return jsonify(coordinates.tolist())
+
+
+
 
 
 
