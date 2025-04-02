@@ -6,5 +6,7 @@ CORS(app)
 
 
 from app import routes
+from app import __init_db__
 if __name__ == "__main__":
     app.run(debug=True)
+    
