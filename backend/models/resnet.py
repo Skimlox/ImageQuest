@@ -1,11 +1,22 @@
 import torch
 import torchvision.transforms.v2 as transforms
 from torchvision import models
-from torchvision.datasets import ImageFolder
 from torchvision.models.feature_extraction import get_graph_node_names
 from torchvision.models.feature_extraction import create_feature_extractor
-from torch.utils.data import DataLoader
 import pickle
+import numpy as np
+import firebase_admin
+from firebase_admin import credentials, firestore,storage
+import requests
+from PIL import Image, UnidentifiedImageError
+from io import BytesIO
+import tempfile
+import os
+
+cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
+firebase_admin.initialize_app(cred,{"storageBucket": "imagequest-aab50.firebasestorage.app"})
+db = firestore.client()
+bucket = storage.bucket()
 
 model =  models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
 model.eval()
@@ -25,23 +36,42 @@ return_nodes = {
     'layer4': 'layer4',
 }
 features =  create_feature_extractor(model, return_nodes=return_nodes)
-
-#Use path on local machine
-dataset_path  = 'C:/Users/16784/Desktop/server/ImageQuest/backend/test_dataset'  #Can use any image dataset from kaggle, feature vectors currently extracted used this dataset https://www.kaggle.com/datasets/vishalsubbiah/pokemon-images-and-types
-dataset = ImageFolder(root=dataset_path, transform=data_transforms)
-dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
+collection = db.collection('main2').stream(timeout=300)
 
 extract = []
-for i, (image, label) in enumerate(dataloader):
-    with torch.no_grad():
-        output = features(image)
-    extraction = output['layer4'].cpu().numpy()
-    reduce = extraction.reshape(1, -1)
-    extract.append(reduce)
-    print(f"Image {i+1} features shape: {output['layer4'].shape}")
+for x in collection:
+    image = x.to_dict()
+    image_url = image['url']
+    image_id = image['image_id']
+    try:
+        get_image = requests.get(image_url, timeout=300)
+        if get_image.status_code != 200:
+            print("CANNOT GET IMAGE")
+            continue
 
-with open('C:/Users/16784/Desktop/server/ImageQuest/backend/feature_vectors/features_resnet.pkl', 'wb') as a:
-    pickle.dump(extract, a)
+        read_image = Image.open(BytesIO(get_image.content)).convert('RGB')
+        image_transform = data_transforms(read_image).unsqueeze(0)
+
+        with torch.no_grad():
+            output = features(image_transform)
+
+        extraction = output['layer4'].cpu().numpy()
+        reduce = extraction.reshape(1, -1)
+        extract.append(reduce)
+
+        print(f"FEATURES EXTRACTED: {image_id}: {reduce.shape}")
+    except UnidentifiedImageError:
+        print("UNIDENTIFIED IMAGE ERROR")
+    except Exception as e:
+        print("ERROR")
+stack_list = np.vstack(extract)
+
+with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
+        pickle.dump(stack_list, temp_file)
+        temp_filename = temp_file.name 
+blob = bucket.blob("feature_vectors/resnet_features.pkl")
+blob.upload_from_filename(temp_filename)
+os.remove(temp_filename)
     
 
 
