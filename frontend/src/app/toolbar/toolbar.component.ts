@@ -50,10 +50,24 @@ export class ToolbarComponent {
         alert('Inception feature extraction not successful');
       }
     });
-    }
-
-
   }
+
+  // DatasetUpload component
+  // check api.service.ts for DatasetUpload()
+  Dataset() {
+    this.NNAPI.DatasetUpload().subscribe({
+      next: (response) => {
+        console.log(response);
+        alert('Dataset Uploaded Successfully');
+      },
+      error: (error) => {
+        console.log(error);
+        alert('Dataset failed to upload.');
+      }  
+    });
+  }
+
+}
   
 
 

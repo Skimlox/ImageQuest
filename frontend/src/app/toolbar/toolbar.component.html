@@ -14,7 +14,9 @@
           <li><a href=""(click)="InceptionV3(); $event.preventDefault()">InceptionV3</a></li>
           </ul>
         </li>
-        <li><a href=""><i class="fa-solid fa-folder"></i></a>
+        
+        <!-- check toolbar.components.ts for Dataset() -->
+        <li><a href="" (click)="Dataset(); $event.preventDefault()"><i class="fa-solid fa-folder"></i></a>
           <!-- <script>
             $("fa-solid fa-folder").on("click", function() {
                 $("input").trigger("click");

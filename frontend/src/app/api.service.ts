@@ -15,6 +15,8 @@ export class ApiService {
   private url_vgg_tsne = 'http://127.0.0.1:5000/vggtsne'
   private url_inception_tsne = 'http://127.0.0.1:5000/inceptiontsne'
 
+  private url_dataset_upload = 'http://127.0.0.1:5000/datasetupload'
+
   constructor(private http: HttpClient) { }
   
   ResNet(): Observable<any> {
@@ -45,5 +47,10 @@ export class ApiService {
   }
   InceptionTSNE(): Observable<any> {
     return this.http.post<any>(this.url_inception_tsne, {});
+  }
+
+  // Uploading Dataset api.service.ts
+  DatasetUpload(): Observable<any> {
+    return this.http.post<any>(this.url_dataset_upload, {});
   }
 }
