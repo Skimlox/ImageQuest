@@ -15,7 +15,13 @@
           </ul>
         </li>
         <li><a href=""><i class="fa-solid fa-folder"></i></a>
-          <input type="file" #fileInput style="display: none;">
+          <!-- <script>
+            $("fa-solid fa-folder").on("click", function() {
+                $("input").trigger("click");
+            });
+          </script> -->
+          <label for="file"></label>
+            <input type="file" id="file" name="file" accept="application/octet-stream, .jpg">
           <ul>
           <li><a href="">Dataset 1</a></li>
           <li><a href="">Dataset 2</a></li>

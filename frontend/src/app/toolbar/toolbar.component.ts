@@ -25,7 +25,8 @@ export class ToolbarComponent {
       }
     });
     }
- VGG16() {
+ 
+  VGG16() {
     this.NNAPI.VGG().subscribe({
       next: (response) => {
         console.log(response);
@@ -50,6 +51,8 @@ export class ToolbarComponent {
       }
     });
     }
+
+
   }
   
 
