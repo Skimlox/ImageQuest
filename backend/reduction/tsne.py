@@ -4,9 +4,9 @@ from sklearn.manifold import TSNE
 import firebase_admin
 from firebase_admin import credentials, storage, firestore
 
-cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
-firebase_admin.initialize_app(cred, {"storageBucket": "imagequest-aab50.firebasestorage.app"})
-db = firestore.client()
+if not firebase_admin._apps:
+    cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
+    firebase_admin.initialize_app(cred, {"storageBucket": "imagequest-aab50.firebasestorage.app"})
 bucket = storage.bucket()
 
 def resnet_tsne():

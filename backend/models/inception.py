@@ -13,8 +13,9 @@ from io import BytesIO
 import tempfile
 import os
 
-cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
-firebase_admin.initialize_app(cred,{"storageBucket": "imagequest-aab50.firebasestorage.app"})
+if not firebase_admin._apps:
+    cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
+    firebase_admin.initialize_app(cred, {"storageBucket": "imagequest-aab50.firebasestorage.app"})
 db = firestore.client()
 bucket = storage.bucket()
 
@@ -68,8 +69,8 @@ stack_list = np.vstack(extract)
 
 
 with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-        pickle.dump(stack_list, temp_file)
-        temp_filename = temp_file.name 
+    pickle.dump(stack_list, temp_file)
+    temp_filename = temp_file.name 
 blob = bucket.blob("feature_vectors/inception_features.pkl")
 blob.upload_from_filename(temp_filename)
 os.remove(temp_filename)

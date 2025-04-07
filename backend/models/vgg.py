@@ -68,8 +68,8 @@ for x in collection:
 stack_list = np.vstack(extract)
 
 with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-        pickle.dump(stack_list, temp_file)
-        temp_filename = temp_file.name 
+    pickle.dump(stack_list, temp_file)
+    temp_filename = temp_file.name 
 blob = bucket.blob("feature_vectors/vgg_features.pkl")
 blob.upload_from_filename(temp_filename)
 os.remove(temp_filename)
