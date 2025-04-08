@@ -19,6 +19,7 @@ PlotlyModule.plotlyjs = Plotly;
 @NgModule({
   declarations: [
     AppComponent,
+    ToolbarComponent,
     GraphComponent,ParametersComponent],
   providers: [
     provideHttpClient()

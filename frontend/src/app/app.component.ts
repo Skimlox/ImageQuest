@@ -15,13 +15,24 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrl: './app.component.css'
 })
 
+
+// changing template/styleURLs from ./app.component.html and .app/component.css to
+// ./toolbar/toolbar.component.html and ./toolbar/toolbar.component.css
+// REVERTED
+// doing so would make the Resnet50, VGG16, InceptionV3 no longer exist to the app.
+// Might need to somehow do the AngularFireDatabase... and then also forward to the toolbar.component html and css
+
+
 // 
 export class AppComponent {
   title = 'capstone';
   message: string = '';
 
-  
-  // // Getting the Main2 Dataset from FirebaseDatabase
+
+  // WIP Getting the Main2 Dataset from FirebaseDatabase
+  // Uncommenting this will cause the webapp to load a blank page.
+  // Something to do with if this is non-empty, then the application doesn't know where the html/css actually is.
+  // I will try to fix this up above in @Component
   // main2: any[];
 
   // constructor(db: AngularFireDatabase) {
