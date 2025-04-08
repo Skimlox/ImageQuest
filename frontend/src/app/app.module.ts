@@ -8,6 +8,10 @@ import * as Plotly from 'plotly.js';
 import { provideHttpClient } from '@angular/common/http';
 import { ParametersComponent } from './parameters/parameters.component';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { environment } from '../environments/environment';
+
 
 PlotlyModule.plotlyjs = Plotly;
 @NgModule({
@@ -20,7 +24,9 @@ PlotlyModule.plotlyjs = Plotly;
   imports: [
     CommonModule,
     PlotlyModule,
-    BrowserModule
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
   ],
   bootstrap: [AppComponent]
   

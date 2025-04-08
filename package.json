@@ -12,6 +12,7 @@
   "dependencies": {
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "angular-plotly.js": "^6.0.0",
+    "angularfire2": "^5.4.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
