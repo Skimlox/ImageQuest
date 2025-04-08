@@ -20,7 +20,8 @@ export class AppComponent {
   title = 'capstone';
   message: string = '';
 
-  // Getting the Main2 Dataset from FirebaseDatabase
+  
+  // // Getting the Main2 Dataset from FirebaseDatabase
   // main2: any[];
 
   // constructor(db: AngularFireDatabase) {

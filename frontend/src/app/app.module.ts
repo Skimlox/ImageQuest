@@ -12,6 +12,7 @@ import { ParametersComponent } from './parameters/parameters.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 
 PlotlyModule.plotlyjs = Plotly;
