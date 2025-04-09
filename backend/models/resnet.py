@@ -13,8 +13,9 @@ from io import BytesIO
 import tempfile
 import os
 
-cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
-firebase_admin.initialize_app(cred,{"storageBucket": "imagequest-aab50.firebasestorage.app"})
+if not firebase_admin._apps:
+    cred = credentials.Certificate("imagequest-aab50-firebase-adminsdk-fbsvc-44dd473055.json")
+    firebase_admin.initialize_app(cred, {"storageBucket": "imagequest-aab50.firebasestorage.app"})
 db = firestore.client()
 bucket = storage.bucket()
 
@@ -57,18 +58,22 @@ for x in collection:
 
         extraction = output['layer4'].cpu().numpy()
         reduce = extraction.reshape(1, -1)
-        extract.append(reduce)
+        extract.append({
+        'image_id': image_id,
+        'url': image_url,
+        'features': reduce[0].tolist()  
+})
 
         print(f"FEATURES EXTRACTED: {image_id}: {reduce.shape}")
     except UnidentifiedImageError:
         print("UNIDENTIFIED IMAGE ERROR")
     except Exception as e:
         print("ERROR")
-stack_list = np.vstack(extract)
+
 
 with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-        pickle.dump(stack_list, temp_file)
-        temp_filename = temp_file.name 
+    pickle.dump(extract, temp_file)
+    temp_filename = temp_file.name 
 blob = bucket.blob("feature_vectors/resnet_features.pkl")
 blob.upload_from_filename(temp_filename)
 os.remove(temp_filename)
