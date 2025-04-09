@@ -235,17 +235,17 @@ def inceptionpca():
 @app.route('/resnettsne', methods=['POST'])
 def resnettsne():
     coordinates = resnet_tsne()
-    return jsonify(coordinates.tolist())
+    return jsonify(coordinates)
 
 @app.route('/vggtsne', methods=['POST'])
 def vggtsne():
     coordinates = vgg_tsne()
-    return jsonify(coordinates.tolist())
+    return jsonify(coordinates)
 
 @app.route('/inceptiontsne', methods=['POST'])
 def inceptiontsne():
     coordinates = inception_tsne()
-    return jsonify(coordinates.tolist())
+    return jsonify(coordinates)
 
 
 
