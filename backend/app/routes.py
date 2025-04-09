@@ -32,6 +32,8 @@ def resnet_NN():
     model =  models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
     model.eval()
 
+
+
     data_transforms = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
@@ -66,43 +68,47 @@ def resnet_NN():
 
             extraction = output['layer4'].cpu().numpy()
             reduce = extraction.reshape(1, -1)
-            extract.append(reduce)
+            extract.append({
+        'image_id': image_id,
+        'url': image_url,
+        'features': reduce.tolist()  
+    })
 
             print(f"FEATURES EXTRACTED: {image_id}: {reduce.shape}")
         except UnidentifiedImageError:
             print("UNIDENTIFIED IMAGE ERROR")
         except Exception as e:
             print("ERROR")
-    stack_list = np.vstack(extract)
+
 
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-        pickle.dump(stack_list, temp_file)
+        pickle.dump(extract, temp_file)
         temp_filename = temp_file.name 
     blob = bucket.blob("feature_vectors/resnet_features.pkl")
     blob.upload_from_filename(temp_filename)
-    os.remove(temp_filename) 
-
+    os.remove(temp_filename)
     return jsonify({"message": "ResNet feature extraction"})
 
 @app.route('/vgg', methods=['POST'])
 def vgg_NN():
-    model = models.vgg16(weights=models.VGG16_Weights.DEFAULT)
+    model =  models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
     model.eval()
 
 
-    data_transforms = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToImage(), 
-    transforms.ToDtype(torch.float32, scale=True),
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-])
 
+    data_transforms = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToImage(), 
+        transforms.ToDtype(torch.float32, scale=True),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ])
 
     return_nodes = {
-    'features.28': 'features.28', 
+    'features.28': 'features.28',
 }
-    features = create_feature_extractor(model, return_nodes=return_nodes)
+    features =  create_feature_extractor(model, return_nodes=return_nodes)
     collection = db.collection('main2').stream(timeout=300)
 
     extract = []
@@ -115,6 +121,7 @@ def vgg_NN():
             if get_image.status_code != 200:
                 print("CANNOT GET IMAGE")
                 continue
+
             read_image = Image.open(BytesIO(get_image.content)).convert('RGB')
             image_transform = data_transforms(read_image).unsqueeze(0)
 
@@ -123,17 +130,21 @@ def vgg_NN():
 
             extraction = output['features.28'].cpu().numpy()
             reduce = extraction.reshape(1, -1)
-            extract.append(reduce)
+            extract.append({
+        'image_id': image_id,
+        'url': image_url,
+        'features': reduce.tolist()  
+    })
 
             print(f"FEATURES EXTRACTED: {image_id}: {reduce.shape}")
         except UnidentifiedImageError:
             print("UNIDENTIFIED IMAGE ERROR")
         except Exception as e:
             print("ERROR")
-    stack_list = np.vstack(extract)
+
 
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-        pickle.dump(stack_list, temp_file)
+        pickle.dump(extract, temp_file)
         temp_filename = temp_file.name 
     blob = bucket.blob("feature_vectors/vgg_features.pkl")
     blob.upload_from_filename(temp_filename)
@@ -144,24 +155,24 @@ def vgg_NN():
 
 @app.route('/inception', methods=['POST'])
 def inception_NN():
-    model = models.inception_v3(weights=models.Inception_V3_Weights.DEFAULT)
+    model =  models.resnet50(weights=models.ResNet50_Weights.DEFAULT)
     model.eval()
 
 
-    data_transforms = transforms.Compose([
-    transforms.Resize(299),
-    transforms.CenterCrop(299),  
-    transforms.RandomHorizontalFlip(),
-    transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]), 
-])
 
+    data_transforms = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToImage(), 
+        transforms.ToDtype(torch.float32, scale=True),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ])
 
     return_nodes = {
-    'Mixed_7c': 'Mixed_7c',  
+    'Mixed_7c': 'Mixed_7c',
 }
-
-    features = create_feature_extractor(model, return_nodes=return_nodes)
+    features =  create_feature_extractor(model, return_nodes=return_nodes)
     collection = db.collection('main2').stream(timeout=300)
 
     extract = []
@@ -183,39 +194,42 @@ def inception_NN():
 
             extraction = output['Mixed_7c'].cpu().numpy()
             reduce = extraction.reshape(1, -1)
-            extract.append(reduce)
+            extract.append({
+        'image_id': image_id,
+        'url': image_url,
+        'features': reduce.tolist()  
+    })
 
             print(f"FEATURES EXTRACTED: {image_id}: {reduce.shape}")
         except UnidentifiedImageError:
             print("UNIDENTIFIED IMAGE ERROR")
         except Exception as e:
             print("ERROR")
-    stack_list = np.vstack(extract)
 
 
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-        pickle.dump(stack_list, temp_file)
+        pickle.dump(extract, temp_file)
         temp_filename = temp_file.name 
     blob = bucket.blob("feature_vectors/inception_features.pkl")
     blob.upload_from_filename(temp_filename)
-    os.remove(temp_filename) 
+    os.remove(temp_filename)
 
     return jsonify({"message": "Inception feature extraction"})
 
 @app.route('/resnetpca', methods=['POST'])
 def resnetpca():
     coordinates = resnet_PCA()
-    return jsonify(coordinates.tolist())
+    return jsonify(coordinates)
 
 @app.route('/vggpca', methods=['POST'])
 def vggpca():
     coordinates = vgg_PCA()
-    return jsonify(coordinates.tolist())
+    return jsonify(coordinates)
 
 @app.route('/inceptionpca', methods=['POST'])
 def inceptionpca():
     coordinates = inception_PCA()
-    return jsonify(coordinates.tolist())
+    return jsonify(coordinates)
 
 
 @app.route('/resnettsne', methods=['POST'])
@@ -232,6 +246,9 @@ def vggtsne():
 def inceptiontsne():
     coordinates = inception_tsne()
     return jsonify(coordinates.tolist())
+
+
+
 
 
 

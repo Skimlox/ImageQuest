@@ -58,17 +58,21 @@ for x in collection:
 
         extraction = output['layer4'].cpu().numpy()
         reduce = extraction.reshape(1, -1)
-        extract.append(reduce)
+        extract.append({
+        'image_id': image_id,
+        'url': image_url,
+        'features': reduce[0].tolist()  
+})
 
         print(f"FEATURES EXTRACTED: {image_id}: {reduce.shape}")
     except UnidentifiedImageError:
         print("UNIDENTIFIED IMAGE ERROR")
     except Exception as e:
         print("ERROR")
-stack_list = np.vstack(extract)
+
 
 with tempfile.NamedTemporaryFile(delete=False, suffix='.pkl') as temp_file:
-    pickle.dump(stack_list, temp_file)
+    pickle.dump(extract, temp_file)
     temp_filename = temp_file.name 
 blob = bucket.blob("feature_vectors/resnet_features.pkl")
 blob.upload_from_filename(temp_filename)
