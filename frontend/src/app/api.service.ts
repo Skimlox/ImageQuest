@@ -17,8 +17,10 @@ export class ApiService {
 
   
   // Datasets
-  private url_dataset1 = ''
-  private url_dataset2 = ''
+
+  // TODO upload datasets and then pull from there?
+  private url_dataset1 = 'https://storage.googleapis.com/imagequest-aab50.firebasestorage.app/chess_dataset/'
+  private url_dataset2 = 'https://storage.googleapis.com/imagequest-aab50.firebasestorage.app/chess_dataset2/'
   private url_dataset3 = ''
 
   constructor(private http: HttpClient) { }

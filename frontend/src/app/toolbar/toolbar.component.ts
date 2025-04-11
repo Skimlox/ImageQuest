@@ -2,6 +2,10 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../api.service';
+
+// . = app, .. = src, ... = frontend, .... = Imagequest
+//import '..../backend/firestore/database.py';
+
 @Component({
   selector: 'app-toolbar',
   imports: [CommonModule],
@@ -60,10 +64,11 @@ export class ToolbarComponent {
     // The display may display the name from Firebase, but the function will be lableled as Dataset1 2 or 3
     // functions DS1, DS2, DS3 are in api.service.ts
 
-    // TEST 4/10/25 10:40am. I expect the code to load as usual: graph, toolbar, etc.
-    // NEXT TEST And then AFTER i implement the DS functions, then it will show console logs
+    // SUCCESS TEST 4/10/25 10:40am. I expect the code to load as usual: graph, toolbar, etc.
+    // SUCCESS TEST: 4/10/25 10:50am. I expect to see console logs errors, because i've implemented DS functions into .html
+    // TEST: 4/10/25 11:00am. I expect to see success logs
     Dataset1(){
-
+      
       this.NNAPI.DS1().subscribe({
         next: (response) => {
           console.log(response);
@@ -105,7 +110,22 @@ export class ToolbarComponent {
       });
 
     }
-  }
+  // main2: any[];
+
+  // constructor(db: AngularFireDatabase) {
+  //   // Initialization inside the constructor
+  //   this.main2 = [];
+    
+  //   db.list('/main2')
+  //     .valueChanges()
+  //     .subscribe(main2  => {
+  //       this.main2 = main2;
+  //       console.log(this.main2);
+  //     });
+  // }  
+  
+  
+}
   
 
 
