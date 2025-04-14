@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../api.service';
+
 @Component({
   selector: 'app-toolbar',
   imports: [CommonModule],
@@ -14,7 +15,7 @@ export class ToolbarComponent {
   
   ResNet50() {
     
-    this.NNAPI.ResNet().subscribe({
+    this.NNAPI.DeclareModel("resnet").subscribe({
       next: (response) => {
         console.log(response);
         alert('ResNet feature extraction successful');
@@ -26,7 +27,7 @@ export class ToolbarComponent {
     });
     }
  VGG16() {
-    this.NNAPI.VGG().subscribe({
+    this.NNAPI.DeclareModel("vgg").subscribe({
       next: (response) => {
         console.log(response);
         alert('VGG feature extraction successful');
@@ -39,7 +40,7 @@ export class ToolbarComponent {
     }
   InceptionV3() {
     
-    this.NNAPI.Inception().subscribe({
+    this.NNAPI.DeclareModel("inception").subscribe({
       next: (response) => {
         console.log(response);
         alert('Inception feature extraction successful');
