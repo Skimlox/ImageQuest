@@ -8,12 +8,17 @@ import * as Plotly from 'plotly.js';
 import { provideHttpClient } from '@angular/common/http';
 import { ParametersComponent } from './parameters/parameters.component';
 
+// Progress Bar Component
+import { ProgressbarComponent } from './progressbar/progressbar.component';
+
 
 PlotlyModule.plotlyjs = Plotly;
 @NgModule({
   declarations: [
     AppComponent,
-    GraphComponent,ParametersComponent,],
+    GraphComponent,
+    ProgressbarComponent,
+    ParametersComponent,],
   providers: [
     provideHttpClient()
   ],

@@ -1,11 +1,15 @@
 /* Based W3 Schools JS Progress Bar */
-#myProgress {
-    width: 100%;
-    background-color: grey;
+
+/* This is the total capacity of the bar */
+#extractBar {
+    margin: auto;
+    width: 50%;
+    background-color: lightblue;
 }
 
-#myBar {
+/* This is the indicator of progress */
+#extractProgress {
     width: 1%;
     height: 30px;
-    background-color: darkblue;
+    background-color: blue;
 }
